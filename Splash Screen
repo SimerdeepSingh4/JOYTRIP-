@@ -1,0 +1,182 @@
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Ride Service App',
+      theme: ThemeData(
+        primarySwatch: Colors.amber,
+        textTheme: TextTheme(
+          headline1: TextStyle(color: Colors.black),
+          bodyText1: TextStyle(color: Colors.black),
+        ),
+      ),
+      home: SplashScreen(),
+    );
+  }
+}
+
+class SplashScreen extends StatefulWidget {
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  bool _showLoginSignup = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Delay for 7 seconds and then show the login/signup options
+    Timer(Duration(seconds: 3), () {
+      setState(() {
+        _showLoginSignup = true;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          // Background image
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/splash_image.png'),
+                fit: BoxFit.cover, // Cover the entire screen
+              ),
+            ),
+          ),
+          // Login/signup options (conditionally displayed above the image)
+          AnimatedOpacity(
+            opacity: _showLoginSignup ? 1.0 : 0.0,
+            duration: Duration(milliseconds: 500),
+            child: Center(
+              child: CustomLoginSignupScreen(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class CustomLoginSignupScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ElevatedButton(
+          onPressed: () {
+            // Navigate to login screen
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => LoginScreen()),
+            );
+          },
+          child: Text('Login'),
+        ),
+        SizedBox(height: 20),
+        ElevatedButton(
+          onPressed: () {
+            // Navigate to signup screen
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SignupScreen()),
+            );
+          },
+          child: Text('Sign Up'),
+        ),
+        SizedBox(height: 20),
+        RichText(
+          text: TextSpan(
+            text: '',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 16,
+            ),
+            children: [
+              TextSpan(
+                text: 'Login',
+                style: TextStyle(
+                  color: Color(0xFFF5015F),
+                  fontWeight: FontWeight.bold,
+                ),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () {
+                    // Navigate to login screen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                    );
+                  },
+              ),
+              TextSpan(
+                text: ' or ',
+                style: TextStyle(color: Colors.black),
+              ),
+              TextSpan(
+                text: 'Signup',
+                style: TextStyle(
+                  color:Color(0xFFF5015F),
+                  fontWeight: FontWeight.bold,
+                ),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () {
+                    // Navigate to signup screen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignupScreen()),
+                    );
+                  },
+              ),
+              TextSpan(
+                text: ' as Driver',
+                style: TextStyle(color: Colors.black),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class LoginScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Login'),
+      ),
+      body: Center(
+        child: Text('Login Screen'),
+      ),
+    );
+  }
+}
+
+class SignupScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Sign Up'),
+      ),
+      body: Center(
+        child: Text('Sign Up Screen'),
+      ),
+    );
+  }
+}
